@@ -7,6 +7,7 @@
  * 
  * Autor.............: Jonas Henrique Nascimento
  * Data de início....: 30/06/2018
+ * Data da ultima atualização: 22/07/2018
  * Data de término...: 22/07/2018
  * 
  * O código consiste em um leitor de dois botões que recebem nivel lógico zero ao serem pressionados pelo movimento da báscula.
@@ -23,14 +24,25 @@
  * Todo o código, esquemático do circuito eletrônico e demais informações estarão sempre contidas no endereço abaixo, para livre aperfeiçoamento do código e do circuito. Todavia
  * pede-se, por educação, que ao compartilharem o código, mantenham os autores originais, tão bem quanto o nome da instituição.
  * 
+ * https://github.com/W8jonas/pluviografo
+ * 
  */
+
 
 -----------------------------------------------------------------
 // §§§§ Hardware §§§§  //
 /* 
- * 
+ * Consiste na comunicação SPI com o módulo cartão SD, na comuni-
+ * cação I2C com o módulo DS3231. Além de possuir sua saída, ori-
+ * ginalmente o pino 5 ligado a um resistor que é ligado à um LED
+ * em current source. Ademais, os dois botões estão ligados em 
+ * pull up. Originalmente, nos digitais 6 e 7.
+ * Para mais informações, consute os esquemáticos na raiz de todo
+ * o projeto, seguindo o link do GitHub, apresentado no cabeçalho 
+ * deste projeto.
  * 
 */
+
 
 -----------------------------------------------------------------
 // §§§§ Declaração das bibliotecas §§§§  //
