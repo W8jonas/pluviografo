@@ -1,0 +1,23 @@
+Lista de materiais:
+
+Bateria -
+
+Regulador de tensão 7805
+Capacitor 100uF
+Capacitor 220nF
+Capacitor 100nF 4 Qtd
+Capacitor 47uF
+Capacitor 1uF
+Microcontrolador 328p
+Cristal oscilador 20MHz
+Capacitor 22pF
+pushbutton 3 Qtd
+Led verde 3mm
+Led amarelo 3mm
+Led azul 5mm
+Resistor 800 ohms 2 Qtd
+Resistor 10K
+Capacitor 20uF 2 Qtd
+Placa de pontos universal
+
+
