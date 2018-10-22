@@ -94,9 +94,9 @@ void setup() {
      Serial.println("Erro ao ler cartao de memoria");
      return;
   }
-   //rtc.setDOW(FRIDAY);          // Selecione o dia em ingles; Ex: (SUNDAY) - Domingo
-   //rtc.setTime(14, 30, 10);     // Selecione a hora; Ex: (14, 30, 10)  -- 14 horas, 30 minutos e 10 segundos
-   //rtc.setDate(20, 7, 2018);    // Selecione a data; Ex: (20, 7, 2018) -- Dia 20 do mes 7 de 2018.
+   //rtc.setDOW(SUNDAY);          // Selecione o dia em ingles; Ex: (SUNDAY) - Domingo
+   //rtc.setTime(10, 4, 15);     // Selecione a hora; Ex: (14, 30, 10)  -- 14 horas, 30 minutos e 10 segundos
+   //rtc.setDate(30, 9, 2018);    // Selecione a data; Ex: (20, 7, 2018) -- Dia 20 do mes 7 de 2018.
    
    while(1){
       digitalWrite(saida, HIGH);
@@ -127,6 +127,10 @@ void loop() {
     Serial.print("Foi apertado o botao: ");
     Serial.println(contador_de_pulsos);
     datalogger = SD.open("Valores.svc", FILE_WRITE);
+    Serial.println(rtc.getDateStr());
+    Serial.println(rtc.getTimeStr());
+    Serial.println(rtc.getTemp());
+    
     if ( datalogger ) {
        Serial.println("Atualizando datalogger");
 //       datalogger.println("    Data,    |    Hora,    |   Contagem,   |   Temperatura,   |");

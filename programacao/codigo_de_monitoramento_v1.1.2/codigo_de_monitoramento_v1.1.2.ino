@@ -3,12 +3,12 @@
  * Instituto Federal de Educação, Ciência e Tecnologia Minas Gerais
  * IFMG - Campus Avançado Conselheiro Lafaiete 
  * 
- * Código para monitoramento de pluviógrafo Versão 1.1.1
+ * Código para monitoramento de pluviógrafo Versão 1.1.2
  * 
  * Autor.............: Jonas Henrique Nascimento
  * Data de início....: 30/06/2018
- * Data da ultima atualização: 05/08/2018
- * Data de término...: 22/07/2018
+ * Data da ultima atualização: 21/10/2018
+ * Data de término...: 21/10/2018
  * 
  * O código consiste em um leitor de dois botões que recebem nível lógico zero ao serem pressionados pelo movimento da báscula.
  * Após a leitura dos botões é feito uma contagem precisa de tempo de 1 minuto, a partir do modulo RTC. Com isso, se obtém o valor da intensidade do pressionar dos botões 
