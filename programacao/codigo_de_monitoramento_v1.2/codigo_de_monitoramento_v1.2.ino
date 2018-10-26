@@ -3,12 +3,12 @@
  * Instituto Federal de Educação, Ciência e Tecnologia Minas Gerais
  * IFMG - Campus Avançado Conselheiro Lafaiete 
  * 
- * Código para monitoramento de pluviógrafo Versão 1.1.2
+ * Código para monitoramento de pluviógrafo Versão 1.2
  * 
  * Autor.............: Jonas Henrique Nascimento
  * Data de início....: 30/06/2018
- * Data da ultima atualização: 22/10/2018
- * Data de término...: 21/10/2018
+ * Data da ultima atualização: 23/10/2018
+ * Data de término...: 23/10/2018
  * 
  * O código consiste em um leitor de dois botões que recebem nível lógico zero ao serem pressionados pelo movimento da báscula.
  * Após a leitura dos botões é feito uma contagem precisa de tempo de 1 minuto, a partir do modulo RTC. Com isso, se obtém o valor da intensidade do pressionar dos botões 
@@ -69,11 +69,16 @@ bool estado2 = false;
 bool flag1   = false;
 bool flag2   = false;
 
+volatile byte flag_acordando = false;
+
+unsigned int contador_flag = 0;
 unsigned int minuto_antigo = 0;
 unsigned int minuto_atual = 0;
 unsigned int contador_de_interrupcao = 0;
 unsigned long contador_de_pulsos = 0;
-
+unsigned long tempo_atual = 0;
+unsigned long tempo_de_delay = 0;
+int contador_DE_bosta = 0;
 
 //-----------------------------------------------------------------
 // §§§§ Declaração dos objetos §§§§  //
@@ -126,7 +131,7 @@ void setup() {
    digitalWrite(saida, HIGH);
    delay(500);
    digitalWrite(saida, LOW);
-   attachInterrupt(0, acordando, FALLING);
+   attachInterrupt(0, acordando, RISING);
    Serial.println("fim setup");
 }
 
@@ -140,19 +145,53 @@ void loop() {
 
    t = rtc.getTime();  
    minuto_atual = t.min;
-
-   if ( minuto_antigo != minuto_atual ){  
+   
+   if (flag_acordando){
+      tempo_de_delay = millis();
+      tempo_atual = tempo_de_delay;
+      flag_acordando = false;
+   }
+   
+   if(tempo_de_delay != 0){
+      tempo_de_delay = millis();
+   }
+   
+   if (contador_DE_bosta == 20000){
+      Serial.print("Tempo_atual: ");
+      Serial.print(tempo_atual);
+      Serial.print("      ");
+      Serial.print("Tempo_de_delay: ");
+      Serial.print(tempo_de_delay);
+      Serial.print("      ");
+      Serial.print("Diferença de tempo: ");
+      Serial.print(tempo_de_delay - tempo_atual);
+      Serial.print("      ");
+      Serial.print(minuto_antigo);
+      Serial.print(" ");
+      Serial.print(minuto_atual);
+      Serial.println("      ");
+      contador_DE_bosta = 0;
+   }
+   contador_DE_bosta++;
+   
+   if((tempo_de_delay - tempo_atual) < 50000){
+      minuto_antigo = minuto_atual;
+   }
+   
+   if ( minuto_antigo != minuto_atual ){
+      flag_acordando = false;
+      tempo_atual = tempo_de_delay;
       minuto_antigo = minuto_atual;
       Serial.print("Foi apertado o botao: ");
       Serial.println(contador_de_pulsos);
-    
+      
       if (contador_de_pulsos == 0) {
          contador_de_interrupcao++;
       } else {
          contador_de_interrupcao = 0;
       }
-    
-      datalogger = SD.open("Valores.svc", FILE_WRITE);
+      
+      datalogger = SD.open("ValorT.svc", FILE_WRITE);
       if ( datalogger ) {
          Serial.print("Atualizando datalogger:");
          Serial.print(rtc.getDateStr());
@@ -176,8 +215,9 @@ void loop() {
       }
       contador_de_pulsos = 0;
       Serial.println("Atualizado");
+   
    }
-
+   
    estado1 = digitalRead(entrada1);
    estado2 = digitalRead(entrada2);
 
@@ -233,26 +273,26 @@ void loop() {
       }
    }
 
-   if (contador_de_interrupcao >= 3) {
+   if (contador_de_interrupcao >= 2) {
       contador_de_interrupcao = 0;
       Serial.println("Comecando a dormir");
+      delay(500);
       comecando_a_dormir();
+      delay(500);
    }
+
 
 } // fim loop
 
 
 void acordando (){
   Serial.println("acordando");
-   delayMicroseconds(2000);
- //  digitalWrite(shield_SD, HIGH);
- //  digitalWrite(shield_RTC, HIGH);
-   delayMicroseconds(2000);
+  flag_acordando = true;
+  //delayMicroseconds(2000); // delay para debug
 }
 
 
 void comecando_a_dormir(){
-  Serial.println("Comecando a dormir");
    digitalWrite(shield_SD, LOW);
    digitalWrite(shield_RTC, LOW);
    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
