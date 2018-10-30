@@ -3,12 +3,12 @@
  * Instituto Federal de Educação, Ciência e Tecnologia Minas Gerais
  * IFMG - Campus Avançado Conselheiro Lafaiete 
  * 
- * Código para monitoramento de pluviógrafo Versão 1.2
+ * Código para monitoramento de pluviógrafo Versão 1.3
  * 
  * Autor.............: Jonas Henrique Nascimento
  * Data de início....: 30/06/2018
- * Data da ultima atualização: 23/10/2018
- * Data de término...: 23/10/2018
+ * Data da ultima atualização: 30/10/2018
+ * Data de término...: 30/10/2018
  * 
  * O código consiste em um leitor de dois botões que recebem nível lógico zero ao serem pressionados pelo movimento da báscula.
  * Após a leitura dos botões é feito uma contagem precisa de tempo de 1 minuto, a partir do modulo RTC. Com isso, se obtém o valor da intensidade do pressionar dos botões 
@@ -81,7 +81,7 @@ unsigned int contador_de_pulsos = 0;
 unsigned long tempo_atual = 0;
 unsigned long tempo_de_delay = 0;
 byte ultimo_botao = 0;
-int contador_DE_bosta = 0;
+int contador_de_debug = 0;
 
 //-----------------------------------------------------------------
 // §§§§ Declaração dos objetos §§§§  //
@@ -159,7 +159,7 @@ void loop() {
       tempo_de_delay = millis();
    }
    
-   if (contador_DE_bosta == 20000){
+   if (contador_de_debug == 20000){
       Serial.print("Tempo_atual: ");
       Serial.print(tempo_atual);
       Serial.print("      ");
@@ -173,9 +173,9 @@ void loop() {
       Serial.print(" ");
       Serial.print(minuto_atual);
       Serial.println("      ");
-      contador_DE_bosta = 0;
+      contador_de_debug = 0;
    }
-   //contador_DE_bosta++;
+   //contador_de_debug++;
    
    if((tempo_de_delay - tempo_atual) < 50000){
       minuto_antigo = minuto_atual;
@@ -248,7 +248,7 @@ void loop() {
       flag2 = true;
    }
 
-   if ( (estado1 == HIGH) && (flag1 == true) && (ultimo_botao != 1) ){ // botão 1 trocou de estado -- botao apertado
+   if ( (estado1 == HIGH) && (flag1 == true) && (ultimo_botao != 1) ){    // botão 1 trocou de estado -- botao apertado
      // while(digitalRead(entrada1) == HIGH){;}
       Serial.println("botao 1 apertado");
       digitalWrite(saida, LOW);
@@ -262,7 +262,7 @@ void loop() {
       ultimo_botao = 1;
    }
 
-   if ( (estado2 == HIGH) && (flag2 == true) && (ultimo_botao != 2) ){ // botão 2 trocou de estado -- botao apertado
+   if ( (estado2 == HIGH) && (flag2 == true) && (ultimo_botao != 2) ){    // botão 2 trocou de estado -- botao apertado
       Serial.println("botao 2 apertado");
       digitalWrite(saida, HIGH);
       contador_de_pulsos_botao_2 ++;
